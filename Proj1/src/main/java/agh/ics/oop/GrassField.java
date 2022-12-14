@@ -41,14 +41,14 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
+    public boolean canMoveTo(Animal animal, Vector2d position) {
         Object buf =  objectAt(position);
         return buf == null || (buf != null && buf instanceof Grass);
     }
 
     @Override
     public boolean place(Animal animal) {
-        if(canMoveTo(animal.getPosition())){
+        if(canMoveTo(animal, animal.getPosition())){
             if(isOccupied((animal.getPosition()))){
                 Objects.remove(objectAt(animal.getPosition()));
                 bounds.remove(animal.getPosition());

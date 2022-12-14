@@ -7,7 +7,7 @@ public class Animal extends AbstractMapElement{
     private IWorldMap map;
     private List<IPositionChangeObserver> Observers;
     private MapDirection animalDir;
-
+    private int Energy;
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
         animalDir = MapDirection.NORTH;
@@ -27,7 +27,12 @@ public class Animal extends AbstractMapElement{
         Observers.forEach(observer -> observer.positionChanged(oldPos, newPos));
     }
 
+    public boolean isEnoughEnergy(){
+        return true;
+    }
+    public void spendEnergy(int Energy){
 
+    }
     public boolean isAt(Vector2d position){
         return getPosition().equals(position);
     }
@@ -38,12 +43,12 @@ public class Animal extends AbstractMapElement{
             case LEFT -> animalDir = animalDir.previous();
             case RIGHT -> animalDir = animalDir.next();
             case FORWARD -> {
-                if(map.canMoveTo(getPosition().add(animalDir.toUnitVector())))
+                if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
                     positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
 
             }
             case BACKWARD -> {
-                if(map.canMoveTo(getPosition().add(animalDir.toUnitVector().opposite())))
+                if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector().opposite())))
                     positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector().opposite()));
             }
         }

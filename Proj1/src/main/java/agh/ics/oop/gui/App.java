@@ -48,7 +48,8 @@ public class App extends Application implements IPositionChangeObserver{
 
 
         MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
-        map = new GrassField( 15);
+//        map = new GrassField( 15);
+        map = new PortalMap(5, 5);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000);
@@ -75,11 +76,6 @@ public class App extends Application implements IPositionChangeObserver{
         drawGrid2();
         primaryStage.setScene(scene);
         primaryStage.show();
-
-
-
-
-
     }
 
     public void drawGrid2(){

@@ -38,7 +38,7 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
         for (int i = 0; i < positions.length; i++) {
             animals[i] = new Animal(map, positions[i]);
             animals[i].addObserver(map);
-            animals[i].addObserver(map.getBounds());
+//            animals[i].addObserver(map.getBounds());
             animals[i].addObserver(gui);
         }
     }

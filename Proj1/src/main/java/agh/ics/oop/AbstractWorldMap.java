@@ -18,29 +18,19 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     }
 
     @Override
-    public boolean canMoveTo(Vector2d position) {
-        return false;
-    }
+    public abstract boolean canMoveTo(Animal animal, Vector2d position);
 
     @Override
-    public boolean place(Animal animal) {
-        return false;
-    }
+    public abstract boolean place(Animal animal);
 
     @Override
-    public boolean isOccupied(Vector2d position) {
-        return false;
-    }
+    public abstract boolean isOccupied(Vector2d position);
 
     @Override
-    public Object objectAt(Vector2d position) {
-        return null;
-    }
+    public abstract Object objectAt(Vector2d position);
 
     @Override
-    public void remove(Animal animal) {
-
-    }
+    public abstract void remove(Animal animal);
 
     @Override
     public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {

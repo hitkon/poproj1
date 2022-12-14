@@ -18,10 +18,6 @@ public class Grass extends AbstractMapElement{
         return "Grass";
     }
 
-    //    @Override
-//    public Vector2d getPosition(){
-//        return position;
-//    }
     public String toString(){
         return "*";
     }
