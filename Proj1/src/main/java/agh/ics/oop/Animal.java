@@ -33,6 +33,9 @@ public class Animal extends AbstractMapElement{
     public void spendEnergy(int Energy){
 
     }
+    public void addEnergy(int Energy){
+
+    }
     public boolean isAt(Vector2d position){
         return getPosition().equals(position);
     }

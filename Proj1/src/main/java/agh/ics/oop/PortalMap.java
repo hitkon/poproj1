@@ -10,34 +10,30 @@ public class PortalMap extends AbstractWorldMap{
     private int length, width;
     private IMapElement[][] Objects;
     private int[][] deadAmount;
-    private List<Vector2d>jungleCells;
-    private boolean[][] isJungleCell;
     public PortalMap(int width, int length){
         this.width = width;
         this.length = length;
         Objects = new IMapElement[width][length];
     }
-    private Vector2d getRandomJungleFreePosition(){
+
+    private void addNewGrass(){
         Random rand = new Random();
-        Vector2d newPosition;
+        Vector2d position;
         do{
-            newPosition = new Vector2d(rand.nextInt(width), rand.nextInt(length));
+            position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
         }
-        while(isJungleCell[newPosition.x][newPosition.y]);
-        return newPosition;
+        while(isOccupied(position));
+        Grass newGrass = new Grass(position);
+        Objects[position.x][position.y] = newGrass;
     }
 
-    public PortalMap(int width, int length, int jungleCellAmount){
+    public PortalMap(int width, int length, int grassAmount){
         this.width = width;
         this.length = length;
         Objects = new IMapElement[width][length];
         deadAmount = new int[width][length];
-        jungleCells = new ArrayList<>();
-        isJungleCell = new boolean[width][length];
-        for (int i = 0; i < jungleCellAmount; i++){
-            Vector2d newPosition = getRandomJungleFreePosition();
-            isJungleCell[newPosition.x][newPosition.y] = true;
-            jungleCells.add(newPosition);
+        for (int i = 0; i < grassAmount; i++){
+            addNewGrass();
         }
     }
     @Override
@@ -82,19 +78,26 @@ public class PortalMap extends AbstractWorldMap{
 
     @Override
     public boolean place(Animal animal) {
-//        if(canMoveTo(animal, animal.getPosition())){
+        boolean isGrassEaten = false;
         if(isOutOfBounds(animal.getPosition()))
         {
             Vector2d newRandomPosition = getRandomFreePosition();
             animal.setPosition(newRandomPosition);
             animal.spendEnergy(0);
+            if(isOccupied(newRandomPosition))
+                isGrassEaten = true;
             Objects[newRandomPosition.x][newRandomPosition.y] = animal;
         }
         else {
-//            if(objectAt(animal.getPosition()) instanceof Animal)
-//                throw new IllegalArgumentException("Two animals on one position: " + animal.getPosition());
+            if(isOccupied(animal.getPosition()))
+                isGrassEaten = true;
             Objects[animal.getPosition().x][animal.getPosition().y] = animal;
         }
+        if(isGrassEaten){
+            animal.addEnergy(0);
+            addNewGrass();
+        }
+
         return true;
     }
 
