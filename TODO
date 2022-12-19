@@ -1,7 +1,12 @@
 TODO
--tekstury obrotów zwierząt (E)
+-tekstury obrotów zwierząt (E) (8 directions and colors)
 -dkokończenie diagramu klas abstrakcyjnych (E)
 -dodanie genomu zwierząt (I/E)
 -dodanie mechaniki rozmnażania
 -dopracowanie mechaniki pojawiania się trawy
 -dopracowanie mechaniki zjadania trawy (i zmieniania poziomu energii)
+
+-Update enum Directions with all 8 directions.
+-Add energy to animal
+-Update SimulationEngine with infinite time.
+-Add Button which starts infinite loop for SimulationEngine.
