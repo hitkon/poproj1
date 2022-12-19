@@ -2,20 +2,36 @@ package agh.ics.oop;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+
 
 public class Animal extends AbstractMapElement{
     private IWorldMap map;
     private List<IPositionChangeObserver> Observers;
+
+    private int[] genom= new int[Variables.genom];
+
+    private int active_gen=0;
     private MapDirection animalDir;
     private int Energy;
+
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
         animalDir = MapDirection.NORTH;
         Observers = new ArrayList<>();
         this.map = map;
         map.place(this);
+        int rand= new Random().nextInt();
+        for (int i=0;i<Variables.genom;i++){
+            genom[i]=Math.abs(rand%Variables.genom);
+            rand= new Random().nextInt();
+        }
     }
 
+
+    public int[] show_genom(){
+        return genom;
+    }
     public void addObserver(IPositionChangeObserver observer){
         Observers.add(observer);
     }
@@ -42,6 +58,13 @@ public class Animal extends AbstractMapElement{
 
 
     public void move(MoveDirection dir){
+        active_gen=(active_gen+1)%Variables.genom;
+        animalDir=animalDir.new_direction(genom[active_gen]);
+        if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
+            positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector().opposite()));
+    }
+
+    public void move2(MoveDirection dir){
         switch(dir){
             case LEFT -> animalDir = animalDir.previous();
             case RIGHT -> animalDir = animalDir.next();
