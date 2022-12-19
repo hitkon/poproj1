@@ -1,6 +1,9 @@
 package agh.ics.oop.gui;
 
+//import agh.ics.oop.*;
+
 import agh.ics.oop.*;
+import agh.ics.oop.Variables;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -49,7 +52,7 @@ public class App extends Application implements IPositionChangeObserver{
 
         MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
 //        map = new GrassField( 15);
-        map = new PortalMap(5, 5, 4);
+        map = new PortalMap(Variables.map_h, Variables.map_l, Variables.plants);
         Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000);

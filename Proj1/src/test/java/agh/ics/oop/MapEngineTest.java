@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MapEngineTest {
-    @Test
+  /*  @Test
     public void EngineTest1(){
         String[] args = new String[]{"f", "b", "r", "l", "f", "f", "r", "r", "f", "f", "f", "f", "f", "f", "f", "f"};
         MoveDirection[] directions = new OptionsParser().parse(args);
@@ -62,5 +62,5 @@ public class MapEngineTest {
         );
 
     }
-
+*/
 }

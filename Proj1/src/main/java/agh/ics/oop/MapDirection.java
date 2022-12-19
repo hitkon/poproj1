@@ -63,8 +63,31 @@ public enum MapDirection {
                 return new Vector2d(0,1);
             case SOUTH:
                 return new Vector2d(0,-1);
+            case SOUTHEAST:
+                return new Vector2d(1,-1);
+            case NORTEAST:
+                return new Vector2d(1,1);
+            case SOUTHWEST:
+                return new Vector2d(-1,-1);
+            case NORTHWEST:
+                return new Vector2d(-1,1);
         }
         return new Vector2d(0,1);
+    }
+
+    public MapDirection new_direction(int gen){
+        switch (gen){
+            case 0: return this;
+            case 1: return this.next();
+            case 2: return this.next().next();
+            case 3: return this.next().next().next();
+            case 4: return this.next().next().next().next();
+            case 5: return this.previous().previous().previous();
+            case 6: return this.previous().previous();
+            case 7: return this.previous();
+
+        }
+        return this;
     }
 
 }
