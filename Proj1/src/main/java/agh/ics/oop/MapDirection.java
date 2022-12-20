@@ -5,7 +5,7 @@ public enum MapDirection {
     SOUTH,
     WEST,
     EAST,
-    NORTEAST,
+    NORTHEAST,
     SOUTHEAST,
     SOUTHWEST,
     NORTHWEST
@@ -14,13 +14,21 @@ public enum MapDirection {
     public String toString(){
         switch(this) {
             case EAST:
-                return "E";
+                return "0";
             case WEST:
-                return "W";
+                return "1";
             case NORTH:
-                return "N";
+                return "2";
             case SOUTH:
-                return "S";
+                return "3";
+            case NORTHEAST:
+                return "4";
+            case NORTHWEST:
+                return "5";
+            case SOUTHEAST:
+                return "6";
+            case SOUTHWEST:
+                return "7";
         }
         return "";
     }
@@ -28,13 +36,21 @@ public enum MapDirection {
     public MapDirection next(){
         switch(this) {
             case EAST:
+                return MapDirection.SOUTHEAST;
+            case SOUTHEAST:
                 return MapDirection.SOUTH;
+            case SOUTH:
+                return MapDirection.SOUTHWEST;
+            case SOUTHWEST:
+                return MapDirection.WEST;
             case WEST:
+                return MapDirection.NORTHWEST;
+            case NORTHWEST:
                 return MapDirection.NORTH;
             case NORTH:
+                return MapDirection.NORTHEAST;
+            case NORTHEAST:
                 return MapDirection.EAST;
-            case SOUTH:
-                return MapDirection.WEST;
         }
         return MapDirection.NORTH;
     }
@@ -42,12 +58,20 @@ public enum MapDirection {
     public MapDirection previous(){
         switch(this) {
             case EAST:
+                return MapDirection.NORTHEAST;
+            case NORTHEAST:
                 return MapDirection.NORTH;
-            case WEST:
-                return MapDirection.SOUTH;
             case NORTH:
+                return MapDirection.NORTHWEST;
+            case NORTHWEST:
                 return MapDirection.WEST;
+            case WEST:
+                return MapDirection.SOUTHWEST;
+            case SOUTHWEST:
+                return MapDirection.SOUTH;
             case SOUTH:
+                return MapDirection.SOUTHEAST;
+            case SOUTHEAST:
                 return MapDirection.EAST;
         }
         return MapDirection.NORTH;
@@ -65,7 +89,7 @@ public enum MapDirection {
                 return new Vector2d(0,-1);
             case SOUTHEAST:
                 return new Vector2d(1,-1);
-            case NORTEAST:
+            case NORTHEAST:
                 return new Vector2d(1,1);
             case SOUTHWEST:
                 return new Vector2d(-1,-1);

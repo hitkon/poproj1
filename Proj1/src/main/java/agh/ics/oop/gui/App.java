@@ -151,8 +151,6 @@ public class App extends Application implements IPositionChangeObserver{
                             panel.add(label, j, i-1);
                         }
                     }
-
-
                 }
             }
         }

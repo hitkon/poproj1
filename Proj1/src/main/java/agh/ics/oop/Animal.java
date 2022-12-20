@@ -57,11 +57,11 @@ public class Animal extends AbstractMapElement{
     }
 
 
-    public void move(MoveDirection dir){
+    public void move(){
+        if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
+            positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
         active_gen=(active_gen+1)%Variables.genom;
         animalDir=animalDir.new_direction(genom[active_gen]);
-        if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
-            positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector().opposite()));
     }
 
     public void move2(MoveDirection dir){
@@ -90,11 +90,23 @@ public class Animal extends AbstractMapElement{
             case EAST -> {
                 return "src/main/resources/right.png";
             }
+            case NORTHEAST -> {
+                return "src/main/resources/upRight.png";
+            }
             case WEST -> {
                 return "src/main/resources/left.png";
             }
+            case NORTHWEST -> {
+                return "src/main/resources/upLeft.png";
+            }
             case NORTH -> {
                 return "src/main/resources/up.png";
+            }
+            case SOUTHEAST -> {
+                return "src/main/resources/downRight.png";
+            }
+            case SOUTHWEST -> {
+                return "src/main/resources/downLeft.png";
             }
             case SOUTH -> {
                 return "src/main/resources/down.png";
