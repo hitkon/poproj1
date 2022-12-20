@@ -83,7 +83,7 @@ public class PortalMap extends AbstractWorldMap{
         {
             Vector2d newRandomPosition = getRandomFreePosition();
             animal.setPosition(newRandomPosition);
-            animal.spendEnergy(0);
+            animal.spendEnergy(Variables.breed_energy);
             if(isOccupied(newRandomPosition))
                 isGrassEaten = true;
             Objects[newRandomPosition.x][newRandomPosition.y] = animal;
@@ -94,7 +94,7 @@ public class PortalMap extends AbstractWorldMap{
             Objects[animal.getPosition().x][animal.getPosition().y] = animal;
         }
         if(isGrassEaten){
-            animal.addEnergy(0);
+            animal.addEnergy(Variables.plant_energy);
             addNewGrass();
         }
 
@@ -115,4 +115,6 @@ public class PortalMap extends AbstractWorldMap{
     public void remove(Animal animal) {
         Objects[animal.getPosition().x][animal.getPosition().y] = null;
     }
+
+
 }

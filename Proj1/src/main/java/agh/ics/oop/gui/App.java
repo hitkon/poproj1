@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class App extends Application implements IPositionChangeObserver{
+public class App extends Application implements IObserver{
 
     private AbstractWorldMap map;
     private GridPane panel;
@@ -209,9 +209,14 @@ public class App extends Application implements IPositionChangeObserver{
     }
 
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+    public void update(Message message) {
         Platform.runLater(()->{drawGrid2();});
     }
+
+//    @Override
+//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+//        Platform.runLater(()->{drawGrid2();});
+//    }
 
 //    @Override
 //    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
