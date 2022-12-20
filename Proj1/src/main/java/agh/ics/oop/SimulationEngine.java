@@ -67,15 +67,20 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
         //gui.drawGrid2();
 
         //System.out.println(map);
-        for (int i = 0; i < args.length; i++){
-            try {
-                Thread.sleep(moveDelay);
-            } catch (InterruptedException e) {
-                System.out.println("Engine thread has stopped");
-                throw new RuntimeException(e);
-            }
-            animals[i%numberOfAnimals].move(args[i]);
+        while (true) {
+            for (int i = 0; i < animals.length; i++) {
+                try {
+                    Thread.sleep(moveDelay);
+                } catch (InterruptedException e) {
+                    System.out.println("Engine thread has stopped");
+                    throw new RuntimeException(e);
+                }
+                animals[i].move();
+                Platform.runLater(() -> {
+                    gui.drawGrid2();
+                });
 //            Platform.runLater(()->{gui.drawGrid2();});
+            }
         }
 //        for (int i = 0; i < numberOfAnimals; i++) {
 //            animals[i].removeObserver(map);

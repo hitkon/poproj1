@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="agh.ics.oop.GenomTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-12-18T14:50:13" hostname="EMBER-LEGION" time="0.025">
+  <properties/>
+  <testcase name="genomprint()" classname="agh.ics.oop.GenomTest" time="0.025"/>
+  <system-out><![CDATA[2 
+0 
+1 
+2 
+6 
+3 
+1 
+1 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
