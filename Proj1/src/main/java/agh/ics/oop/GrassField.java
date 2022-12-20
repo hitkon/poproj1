@@ -77,6 +77,11 @@ public class GrassField extends AbstractWorldMap implements IWorldMap{
         Objects.remove(animal.getPosition());
     }
 
+    @Override
+    public void addNewGrass() {
+
+    }
+
     public Vector2d getLeftDownCorner(){
         return bounds.getLeftDown();
 //        Vector2d leftDown = new Vector2d(0, 0);

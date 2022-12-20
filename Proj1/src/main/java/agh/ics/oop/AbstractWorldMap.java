@@ -4,6 +4,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IObserver{
 
     protected MapBoundary bounds;
 
+    public abstract void addNewGrass();
+
     public abstract Vector2d getLeftDownCorner();
 
     public abstract void setBounds(MapBoundary bounds);

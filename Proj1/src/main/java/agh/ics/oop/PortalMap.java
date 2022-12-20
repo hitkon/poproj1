@@ -1,28 +1,68 @@
 package agh.ics.oop;
 
 import javax.swing.text.Position;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class PortalMap extends AbstractWorldMap{
 
     private int length, width;
     private IMapElement[][] Objects;
-    private int[][] deadAmount;
+    private HashSet<Vector2d> deadCells;
     public PortalMap(int width, int length){
         this.width = width;
         this.length = length;
         Objects = new IMapElement[width][length];
     }
 
-    private void addNewGrass(){
+    private boolean isFreeDeadCellExist(){
+        if(deadCells.isEmpty())
+            return false;
+
+        Vector2d[] cells = deadCells.toArray(new Vector2d[deadCells.size()]);
+        for(int i = 0 ; i < deadCells.size(); i++){
+            if(!(objectAt(cells[i]) instanceof Grass))
+                return true;
+        }
+        return false;
+    }
+
+    private Vector2d returnFreeDeadPosition(){
+        Vector2d[] cells = deadCells.toArray(new Vector2d[deadCells.size()]);
+        for(int i = 0 ; i < deadCells.size(); i++){
+            if(!(objectAt(cells[i]) instanceof Grass))
+                return cells[i];
+        }
+        return null;
+    }
+
+    public void addNewGrass(){
         Random rand = new Random();
         Vector2d position;
-        do{
-            position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
+
+        if(rand.nextInt(10) <=1 ){
+            if(isFreeDeadCellExist()) {
+                position = returnFreeDeadPosition();
+            }
+            else{
+                return;
+            }
         }
-        while(isOccupied(position));
+        else {
+            if(deadCells.size() == width * length){
+                return;
+                //position = returnFreeDeadPosition();
+            }
+            else{
+                do {
+                    position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
+                }
+                while (deadCells.contains(position) || (objectAt(position) instanceof Grass));
+            }
+        }
+        if(objectAt(position) instanceof Animal){
+            ((Animal)objectAt(position)).addEnergy(Variables.breed_energy);
+            return;
+        }
         Grass newGrass = new Grass(position);
         Objects[position.x][position.y] = newGrass;
     }
@@ -31,7 +71,7 @@ public class PortalMap extends AbstractWorldMap{
         this.width = width;
         this.length = length;
         Objects = new IMapElement[width][length];
-        deadAmount = new int[width][length];
+        deadCells = new HashSet<>();
         for (int i = 0; i < grassAmount; i++){
             addNewGrass();
         }
@@ -95,7 +135,7 @@ public class PortalMap extends AbstractWorldMap{
         }
         if(isGrassEaten){
             animal.addEnergy(Variables.plant_energy);
-            addNewGrass();
+            //addNewGrass();
         }
 
         return true;
@@ -116,5 +156,26 @@ public class PortalMap extends AbstractWorldMap{
         Objects[animal.getPosition().x][animal.getPosition().y] = null;
     }
 
-
+    public void update(Message message){
+        switch (message.getText()){
+            case "PositionChanged": {
+                Vector2d[] positions = (Vector2d[]) message.getAttachment();
+                Vector2d oldPosition = positions[0], newPosition = positions[1];
+                Animal animal = (Animal)objectAt(oldPosition);
+                remove(animal);
+                animal.setPosition(newPosition);
+                place(animal);
+                break;
+            }
+            case "Died": {
+                Animal animal = (Animal)message.getAttachment();
+                remove(animal);
+                deadCells.add(animal.getPosition());
+                break;
+            }
+            default:{
+                //throw new IllegalArgumentException("Unable to read message:" + message.getText());
+            }
+        }
+    }
 }

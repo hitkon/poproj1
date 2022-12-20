@@ -3,11 +3,11 @@ package agh.ics.oop;
 public class Variables {
 
     //wysokość i szerokość mapy
-    public static int map_h=4;
+    public static int map_h=8;
     public static int map_l=8;
 
     //startowa liczba roślin
-    public static int plants=4;
+    public static int plants=20;
 
     //energia zapewniana przez zjedzenie jednej rośliny
     public static int plant_energy=4;
@@ -16,7 +16,7 @@ public class Variables {
     public static int plants_growth=1;
 
     //startowa liczba zwierzaków
-    public static int animals=2;
+    public static int animals=6;
 
     //startowa energia zwierzaków
     public static int start_energy=4;
