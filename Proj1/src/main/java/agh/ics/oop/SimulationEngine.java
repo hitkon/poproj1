@@ -9,34 +9,34 @@ import java.util.Random;
 
 public class SimulationEngine implements IEngine, IObserver, Runnable{
 
-    private MoveDirection[] args;
+    //private MoveDirection[] args;
     private AbstractWorldMap map;
     private Vector2d[] positions;
     private List<Animal> animals;
     private int moveDelay;
     private App gui;
 
-    public SimulationEngine(MoveDirection[] args, AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
-        this.args = args;
-        this.map = map;
-        this.positions = positions;
-        this.gui = gui;
-        this.moveDelay = moveDelay;
-        animals = new ArrayList<>();
-        //animals = new Animal[positions.length];
-        for (int i = 0; i < positions.length; i++) {
-
-            Animal animal = new Animal(map, positions[i]);
-            animal.addObserver(map);
-            animal.addObserver(this);
-            animals.add(animal);
-            //animals.get(i).addObserver(map);
-            //animals[i].addObserver(map.getBounds());
-            //animals[i].addObserver(gui);
-        }
-    }
+//    public SimulationEngine( AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
+//        //this.args = args;
+//        this.map = map;
+//        this.positions = positions;
+//        this.gui = gui;
+//        this.moveDelay = moveDelay;
+//        animals = new ArrayList<>();
+//        //animals = new Animal[positions.length];
+//        for (int i = 0; i < positions.length; i++) {
+//
+//            Animal animal = new Animal(map, positions[i]);
+//            animal.addObserver(map);
+//            animal.addObserver(this);
+//            animals.add(animal);
+//            //animals.get(i).addObserver(map);
+//            //animals[i].addObserver(map.getBounds());
+//            //animals[i].addObserver(gui);
+//        }
+//    }
     public SimulationEngine( AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
-        this.args = args;
+        //this.args = args;
         this.map = map;
         this.positions = positions;
         this.gui = gui;
@@ -63,9 +63,9 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     }
 
 
-    public void setArgs(MoveDirection[] args){
-        this.args = args;
-    }
+//    public void setArgs(MoveDirection[] args){
+//        this.args = args;
+//    }
     @Override
     public void run() {
 

@@ -102,21 +102,6 @@ public class Animal extends AbstractMapElement{
             die();
     }
 
-    public void move2(MoveDirection dir){
-        switch(dir){
-            case LEFT -> animalDir = animalDir.previous();
-            case RIGHT -> animalDir = animalDir.next();
-            case FORWARD -> {
-                if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
-                    positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
-
-            }
-            case BACKWARD -> {
-                if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector().opposite())))
-                    positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector().opposite()));
-            }
-        }
-    }
 
     public String toString(){
         return animalDir.toString();

@@ -70,7 +70,7 @@ public class App extends Application implements IObserver{
         panel.setGridLinesVisible(true);
 
 
-        MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
+        //MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
 //        map = new GrassField( 15);
         map = new PortalMap(Variables.map_h, Variables.map_l, Variables.plants);
         Vector2d[] positions = genAnimals(Variables.animals);
@@ -81,12 +81,12 @@ public class App extends Application implements IObserver{
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                try {
-                    engine.setArgs(new OptionsParser().parse(textField.getText().split(" ")));
-                }
-                catch (Exception e){
-                    System.out.println(e.getMessage());
-                }
+//                try {
+//                    engine.setArgs(new OptionsParser().parse(textField.getText().split(" ")));
+//                }
+//                catch (Exception e){
+//                    System.out.println(e.getMessage());
+//                }
                 Thread engineThread = new Thread(engine);
                 engineThread.start();
             }
