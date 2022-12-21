@@ -17,6 +17,7 @@ public class Animal extends AbstractMapElement{
     private MapDirection animalDir;
     private int energy;
     private int children;
+    private int age;
 
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
@@ -142,4 +143,25 @@ public class Animal extends AbstractMapElement{
     public String getLabelText() {
         return "A" + this.getPosition().toString();
     }
+
+    public Animal comparator(Animal b){
+        if (this.energy>b.energy){
+            return this;
+        }
+        else if (this.energy<b.energy){
+            return b;
+        }
+        else if (this.age>b.age){
+            return this;
+        }
+        else if (this.age<b.age){
+            return b;
+        }
+        else if (this.children>b.children){
+            return this;
+        }
+        else return b;
+
+    }
+
 }
