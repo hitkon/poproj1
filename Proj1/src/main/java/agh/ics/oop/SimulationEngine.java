@@ -85,6 +85,12 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
 
         //System.out.println(map);
         while (true) {
+
+            if(animals.isEmpty())
+                break;
+
+            for (int i = 0; i < Variables.plants_growth; i++)
+                map.addNewGrass();
             for (int i = 0; i < animals.size(); i++) {
                 try {
                     Thread.sleep(moveDelay);

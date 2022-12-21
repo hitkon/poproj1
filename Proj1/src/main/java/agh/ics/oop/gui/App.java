@@ -21,7 +21,9 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 
 public class App extends Application implements IObserver{
 
@@ -29,6 +31,24 @@ public class App extends Application implements IObserver{
     private GridPane panel;
     private GridPane panel2;
     private Scene scene;
+
+    private Vector2d[] genAnimals(int n){
+        HashSet<Vector2d> positions = new HashSet<>();
+        Random rand = new Random();
+        for (int i = 0; i < n; i++){
+            Vector2d position;
+            do{
+                position = new Vector2d(rand.nextInt(Variables.map_h), rand.nextInt(Variables.map_l));
+            }
+            while (positions.contains(position));
+            positions.add(position);
+        }
+//        Vector2d[] ans = new Vector2d[positions.size()];
+//        for (int i = 0; i < positions.size(); i++){
+//            positions.
+//        }
+        return positions.toArray(new Vector2d[positions.size()]);
+    }
 
     @Override
     public void init() throws Exception {
@@ -53,7 +73,7 @@ public class App extends Application implements IObserver{
         MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
 //        map = new GrassField( 15);
         map = new PortalMap(Variables.map_h, Variables.map_l, Variables.plants);
-        Vector2d[] positions = {new Vector2d(2, 2), new Vector2d(3, 4)};
+        Vector2d[] positions = genAnimals(Variables.animals);
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000);
 

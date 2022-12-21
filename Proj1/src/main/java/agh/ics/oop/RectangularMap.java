@@ -42,6 +42,11 @@ public class RectangularMap extends AbstractWorldMap implements IWorldMap {
         return map[position.x][position.y];
     }
 
+    @Override
+    public void addNewGrass() {
+
+    }
+
     public Vector2d getLeftDownCorner(){
         return new Vector2d(0,0);
     }

@@ -16,6 +16,7 @@ public class Animal extends AbstractMapElement{
     private int active_gen=0;
     private MapDirection animalDir;
     private int energy;
+    private int children;
 
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
@@ -29,9 +30,26 @@ public class Animal extends AbstractMapElement{
             genom[i]=Math.abs(rand%Variables.genom);
             rand= new Random().nextInt();
         }
+        this.children = 0;
+    }
+    public Animal(IWorldMap map, Vector2d initialPos, Animal father, Animal mother){
+        super(initialPos);
+        animalDir = MapDirection.NORTH;
+        Observers = new ArrayList<>();
+        this.map = map;
+        map.place(this);
+        this.energy = Variables.start_energy;
+        int rand= new Random().nextInt();
+        for (int i=0;i<Variables.genom;i++){
+            genom[i]=Math.abs(rand%Variables.genom);
+            rand= new Random().nextInt();
+        }
+        this.children = 0;
     }
 
-
+    public void addChildren(){
+        this.children+=1;
+    }
     public int[] show_genom(){
         return genom;
     }
@@ -65,11 +83,21 @@ public class Animal extends AbstractMapElement{
     }
 
     public void move(){
-        if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
+
+//        if(map.objectAt(getPosition().add(animalDir.toUnitVector())) instanceof Animal){
+//            Animal pair = (Animal)map.objectAt(getPosition().add(animalDir.toUnitVector()));
+//            if(this.isEnoughEnergy() && pair.isEnoughEnergy()){
+//                this.addChildren();
+//                pair.addChildren();
+//
+//            }
+//        }
+        if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
+            spendEnergy(1);
+        }
         active_gen=(active_gen+1)%Variables.genom;
         animalDir=animalDir.new_direction(genom[active_gen]);
-        spendEnergy(1);
         if(energy == 0)
             die();
     }
