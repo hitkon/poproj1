@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObserver{
+public abstract class AbstractWorldMap implements IWorldMap, IObserver{
 
     protected MapBoundary bounds;
 
@@ -32,11 +32,37 @@ public abstract class AbstractWorldMap implements IWorldMap, IPositionChangeObse
     @Override
     public abstract void remove(Animal animal);
 
+//    public abstract void removeFromAnimalList(Animal animal);
+
+//    @Override
+//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+//
+//        Animal animal = (Animal)objectAt(oldPosition);
+//        remove(animal);
+//        animal.setPosition(newPosition);
+//        place(animal);
+//    }
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Animal animal = (Animal)objectAt(oldPosition);
-        remove(animal);
-        animal.setPosition(newPosition);
-        place(animal);
+    public void update(Message message){
+        switch (message.getText()){
+            case "PositionChanged": {
+                Vector2d[] positions = (Vector2d[]) message.getAttachment();
+                Vector2d oldPosition = positions[0], newPosition = positions[1];
+                Animal animal = (Animal)objectAt(oldPosition);
+                remove(animal);
+                animal.setPosition(newPosition);
+                place(animal);
+                break;
+            }
+            case "Died": {
+                Animal animal = (Animal)message.getAttachment();
+                remove(animal);
+                //removeFromAnimalList(animal);
+                break;
+            }
+            default:{
+                //throw new IllegalArgumentException("Unable to read message:" + message.getText());
+            }
+        }
     }
 }

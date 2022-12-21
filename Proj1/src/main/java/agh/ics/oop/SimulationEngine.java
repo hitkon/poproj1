@@ -3,14 +3,16 @@ package agh.ics.oop;
 import agh.ics.oop.gui.App;
 import javafx.application.Platform;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
-public class SimulationEngine implements IEngine, IPositionChangeObserver, Runnable{
+public class SimulationEngine implements IEngine, IObserver, Runnable{
 
     private MoveDirection[] args;
     private AbstractWorldMap map;
     private Vector2d[] positions;
-    private Animal[] animals;
+    private List<Animal> animals;
     private int moveDelay;
     private App gui;
 
@@ -20,11 +22,16 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
         this.positions = positions;
         this.gui = gui;
         this.moveDelay = moveDelay;
-        animals = new Animal[positions.length];
+        animals = new ArrayList<>();
+        //animals = new Animal[positions.length];
         for (int i = 0; i < positions.length; i++) {
-            animals[i] = new Animal(map, positions[i]);
-            animals[i].addObserver(map);
-            animals[i].addObserver(map.getBounds());
+
+            Animal animal = new Animal(map, positions[i]);
+            animal.addObserver(map);
+            animal.addObserver(this);
+            animals.add(animal);
+            //animals.get(i).addObserver(map);
+            //animals[i].addObserver(map.getBounds());
             //animals[i].addObserver(gui);
         }
     }
@@ -34,17 +41,27 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
         this.positions = positions;
         this.gui = gui;
         this.moveDelay = moveDelay;
-        animals = new Animal[positions.length];
+        animals = new ArrayList<>();
+        //animals = new Animal[positions.length];
         for (int i = 0; i < positions.length; i++) {
-            animals[i] = new Animal(map, positions[i]);
-            animals[i].addObserver(map);
-//            animals[i].addObserver(map.getBounds());
-            animals[i].addObserver(gui);
+
+            Animal animal = new Animal(map, positions[i]);
+            animal.addObserver(map);
+            animal.addObserver(this);
+            animals.add(animal);
+            //animals.get(i).addObserver(map);
+            //animals[i].addObserver(map.getBounds());
+            //animals[i].addObserver(gui);
         }
     }
 
     @Override
-    public Animal[] getAnimals(){return animals;};
+    public Animal[] getAnimals(){return (Animal[]) animals.toArray();};
+
+    public void removeAnimal(Animal animal){
+        animals.remove(animal);
+    }
+
 
     public void setArgs(MoveDirection[] args){
         this.args = args;
@@ -60,22 +77,22 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
 //            animals[i].addObserver(map.getBounds());
 //            animals[i].addObserver(this);
 //        }
-
-        if (map instanceof GrassField)
-            map.getBounds().forceUpdate();
+//
+//        if (map instanceof GrassField)
+//            map.getBounds().forceUpdate();
 
         //gui.drawGrid2();
 
         //System.out.println(map);
         while (true) {
-            for (int i = 0; i < animals.length; i++) {
+            for (int i = 0; i < animals.size(); i++) {
                 try {
                     Thread.sleep(moveDelay);
                 } catch (InterruptedException e) {
                     System.out.println("Engine thread has stopped");
                     throw new RuntimeException(e);
                 }
-                animals[i].move();
+                animals.get(i).move();
                 Platform.runLater(() -> {
                     gui.drawGrid2();
                 });
@@ -89,8 +106,26 @@ public class SimulationEngine implements IEngine, IPositionChangeObserver, Runna
 //        }
     }
 
+//    @Override
+//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
+//        Platform.runLater(()->{gui.drawGrid2();});
+//    }
+
     @Override
-    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-        Platform.runLater(()->{gui.drawGrid2();});
+    public void update(Message message){
+        switch (message.getText()){
+            case "PositionChanged": {
+                break;
+            }
+            case "Died": {
+                Animal animal = (Animal)message.getAttachment();
+                //remove(animal);
+                removeAnimal(animal);
+                break;
+            }
+            default:{
+                //throw new IllegalArgumentException("Unable to read message:" + message.getText());
+            }
+        }
     }
 }

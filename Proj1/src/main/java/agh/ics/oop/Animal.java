@@ -1,5 +1,7 @@
 package agh.ics.oop;
 
+import com.sun.security.auth.NTSid;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -7,13 +9,13 @@ import java.util.Random;
 
 public class Animal extends AbstractMapElement{
     private IWorldMap map;
-    private List<IPositionChangeObserver> Observers;
+    private List<IObserver> Observers;
 
     private int[] genom= new int[Variables.genom];
 
     private int active_gen=0;
     private MapDirection animalDir;
-    private int Energy;
+    private int energy;
 
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
@@ -21,6 +23,7 @@ public class Animal extends AbstractMapElement{
         Observers = new ArrayList<>();
         this.map = map;
         map.place(this);
+        this.energy = Variables.start_energy;
         int rand= new Random().nextInt();
         for (int i=0;i<Variables.genom;i++){
             genom[i]=Math.abs(rand%Variables.genom);
@@ -32,36 +35,43 @@ public class Animal extends AbstractMapElement{
     public int[] show_genom(){
         return genom;
     }
-    public void addObserver(IPositionChangeObserver observer){
+    public void addObserver(IObserver observer){
         Observers.add(observer);
     }
-    public void removeObserver(IPositionChangeObserver observer){
+    public void removeObserver(IObserver observer){
         Observers.remove(observer);
     }
 
     public void positionChanged(Vector2d oldPos, Vector2d newPos){
-        Observers.forEach(observer -> observer.positionChanged(oldPos, newPos));
+        Vector2d[] positions = {oldPos, newPos};
+        Observers.forEach(observer -> observer.update( new Message("PositionChanged", positions)));
+    }
+
+    public void die(){
+        Observers.forEach(observer -> observer.update( new Message("Died", this)));
     }
 
     public boolean isEnoughEnergy(){
-        return true;
+        return energy > Variables.ready_energy;
     }
-    public void spendEnergy(int Energy){
-
+    public void spendEnergy(int energy){
+        this.energy -= energy;
     }
-    public void addEnergy(int Energy){
-
+    public void addEnergy(int energy){
+        this.energy += energy;
     }
     public boolean isAt(Vector2d position){
         return getPosition().equals(position);
     }
-
 
     public void move(){
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector())))
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
         active_gen=(active_gen+1)%Variables.genom;
         animalDir=animalDir.new_direction(genom[active_gen]);
+        spendEnergy(1);
+        if(energy == 0)
+            die();
     }
 
     public void move2(MoveDirection dir){
