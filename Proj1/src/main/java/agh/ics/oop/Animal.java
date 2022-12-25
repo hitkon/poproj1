@@ -32,6 +32,7 @@ public class Animal extends AbstractMapElement{
             rand= new Random().nextInt();
         }
         this.children = 0;
+        this.age = 0;
     }
     public Animal(IWorldMap map, Vector2d initialPos, Animal father, Animal mother){
         super(initialPos);
@@ -46,11 +47,9 @@ public class Animal extends AbstractMapElement{
             rand= new Random().nextInt();
         }
         this.children = 0;
+        this.age = 0;
     }
 
-    public void addChildren(){
-        this.children+=1;
-    }
     public int[] show_genom(){
         return genom;
     }
@@ -64,6 +63,13 @@ public class Animal extends AbstractMapElement{
     public void positionChanged(Vector2d oldPos, Vector2d newPos){
         Vector2d[] positions = {oldPos, newPos};
         Observers.forEach(observer -> observer.update( new Message("PositionChanged", positions)));
+    }
+
+    public void addChild(){
+        children++;
+    }
+    public void makeNewAnimal(Animal pair){
+        //TODO
     }
 
     public void die(){
@@ -93,6 +99,7 @@ public class Animal extends AbstractMapElement{
 //
 //            }
 //        }
+        age+=1;
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
