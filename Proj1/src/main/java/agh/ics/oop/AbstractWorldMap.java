@@ -64,6 +64,11 @@ public abstract class AbstractWorldMap implements IWorldMap, IObserver{
                 //removeFromAnimalList(animal);
                 break;
             }
+            case "NewAnimal":{
+                Animal animal = (Animal) message.getAttachment();
+                place(animal);
+                break;
+            }
             default:{
                 //throw new IllegalArgumentException("Unable to read message:" + message.getText());
             }

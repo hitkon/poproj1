@@ -22,32 +22,56 @@ public class Animal extends AbstractMapElement{
     public Animal(IWorldMap map, Vector2d initialPos){
         super(initialPos);
         animalDir = MapDirection.NORTH;
+        animalDir = animalDir.new_direction(new Random().nextInt(8));
         Observers = new ArrayList<>();
         this.map = map;
         map.place(this);
         this.energy = Variables.start_energy;
         int rand= new Random().nextInt();
         for (int i=0;i<Variables.genom;i++){
-            genom[i]=Math.abs(rand%Variables.genom);
+            genom[i]=Math.abs(rand%8);
             rand= new Random().nextInt();
         }
         this.children = 0;
         this.age = 0;
     }
+
+    private int[] getNewGenom(Animal animal1, Animal animal2){
+        int[] newGen = new int[Variables.genom];
+        int num1 = animal1.energy / (animal1.energy + animal2.energy);
+        for (int i = 0; i < num1; i++)
+            newGen[i] = animal1.genom[i];
+        for(int i = num1; i < Variables.genom; i++)
+            newGen[i] = animal2.genom[i];
+        return newGen;
+    }
+
+    private void mutate(){
+        Random rand = new Random();
+        int mutationsNum = rand.nextInt (Variables.maxMutations - Variables.minMutations + 1) + Variables.minMutations;
+        for(int i = 0; i < mutationsNum; i++){
+            genom[rand.nextInt(Variables.genom)] = rand.nextInt(8);
+        }
+    }
+
+
     public Animal(IWorldMap map, Vector2d initialPos, Animal father, Animal mother){
         super(initialPos);
         animalDir = MapDirection.NORTH;
+        animalDir = animalDir.new_direction(new Random().nextInt(8));
         Observers = new ArrayList<>();
         this.map = map;
         map.place(this);
         this.energy = Variables.start_energy;
         int rand= new Random().nextInt();
-        for (int i=0;i<Variables.genom;i++){
-            genom[i]=Math.abs(rand%Variables.genom);
-            rand= new Random().nextInt();
-        }
+        if(new Random().nextInt() % 2 == 0)
+            genom = getNewGenom(father, mother);
+        else
+            genom = getNewGenom(mother, father);
+        mutate();
         this.children = 0;
         this.age = 0;
+
     }
 
     public int[] show_genom(){
@@ -69,7 +93,12 @@ public class Animal extends AbstractMapElement{
         children++;
     }
     public void makeNewAnimal(Animal pair){
-        //TODO
+        Animal newAnimal = new Animal(map, getPosition(), this, pair);
+        children+=1;
+        pair.children+=1;
+        spendEnergy(Variables.breed_energy);
+        pair.spendEnergy(Variables.breed_energy);
+        Observers.forEach(observer -> observer.update( new Message("NewAnimal", newAnimal)));
     }
 
     public void die(){
@@ -90,7 +119,10 @@ public class Animal extends AbstractMapElement{
     }
 
     public void move(){
-
+        if(energy == 0) {
+            die();
+            return;
+        }
 //        if(map.objectAt(getPosition().add(animalDir.toUnitVector())) instanceof Animal){
 //            Animal pair = (Animal)map.objectAt(getPosition().add(animalDir.toUnitVector()));
 //            if(this.isEnoughEnergy() && pair.isEnoughEnergy()){
@@ -106,8 +138,7 @@ public class Animal extends AbstractMapElement{
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
         }
-        if(energy == 0)
-            die();
+
     }
 
 

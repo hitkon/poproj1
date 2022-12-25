@@ -59,6 +59,8 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     public Animal[] getAnimals(){return (Animal[]) animals.toArray();};
 
     public void removeAnimal(Animal animal){
+        animal.removeObserver(this);
+        animal.removeObserver(map);
         animals.remove(animal);
     }
 
@@ -92,22 +94,22 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
             for (int i = 0; i < Variables.plants_growth; i++)
                 map.addNewGrass();
             for (int i = 0; i < animals.size(); i++) {
-                try {
-                    Thread.sleep(moveDelay);
-                } catch (InterruptedException e) {
-                    System.out.println("Engine thread has stopped");
-                    throw new RuntimeException(e);
-                }
                 animals.get(i).move();
-                Platform.runLater(() -> {
-                    gui.drawGrid2();
-                });
 //            Platform.runLater(()->{gui.drawGrid2();});
             }
             for(int i = 0; i < map.getRightUpCorner().x; i++){
                 for(int j = 0; j < map.getRightUpCorner().y; j++)
                     map.startDayRutine(new Vector2d(i,j));
             }
+            try {
+                Thread.sleep(moveDelay);
+            } catch (InterruptedException e) {
+                System.out.println("Engine thread has stopped");
+                throw new RuntimeException(e);
+            }
+            Platform.runLater(() -> {
+                gui.drawGrid2();
+            });
         }
 //        for (int i = 0; i < numberOfAnimals; i++) {
 //            animals[i].removeObserver(map);
@@ -131,6 +133,14 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 Animal animal = (Animal)message.getAttachment();
                 //remove(animal);
                 removeAnimal(animal);
+                break;
+            }
+            case "NewAnimal":{
+                Animal animal = (Animal) message.getAttachment();
+                animal.addObserver(map);
+                animal.addObserver(this);
+                animals.add(animal);
+                //map.place(animal);
                 break;
             }
             default:{

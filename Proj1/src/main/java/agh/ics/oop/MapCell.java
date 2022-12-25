@@ -72,7 +72,8 @@ public class MapCell {
             for(int i = 1; i < Animals.size(); i++)
                 if(animal != Animals.get(i))
                     pair = pair.comparator(Animals.get(i));
-            animal.makeNewAnimal(pair);
+            if(animal.isEnoughEnergy() && pair.isEnoughEnergy())
+                animal.makeNewAnimal(pair);
         }
     }
 }
