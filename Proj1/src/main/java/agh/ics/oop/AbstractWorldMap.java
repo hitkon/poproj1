@@ -34,6 +34,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IObserver{
     @Override
     public abstract void remove(Animal animal);
 
+    public abstract void startDayRutine(Vector2d pos);
+
 //    public abstract void removeFromAnimalList(Animal animal);
 
 //    @Override

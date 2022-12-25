@@ -100,12 +100,12 @@ public class Animal extends AbstractMapElement{
 //            }
 //        }
         age+=1;
+        active_gen=(active_gen+1)%Variables.genom;
+        animalDir=animalDir.new_direction(genom[active_gen]);
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
         }
-        active_gen=(active_gen+1)%Variables.genom;
-        animalDir=animalDir.new_direction(genom[active_gen]);
         if(energy == 0)
             die();
     }

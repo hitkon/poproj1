@@ -104,6 +104,10 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 });
 //            Platform.runLater(()->{gui.drawGrid2();});
             }
+            for(int i = 0; i < map.getRightUpCorner().x; i++){
+                for(int j = 0; j < map.getRightUpCorner().y; j++)
+                    map.startDayRutine(new Vector2d(i,j));
+            }
         }
 //        for (int i = 0; i < numberOfAnimals; i++) {
 //            animals[i].removeObserver(map);
