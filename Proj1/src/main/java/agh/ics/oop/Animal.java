@@ -108,6 +108,8 @@ public class Animal extends AbstractMapElement{
     public boolean isEnoughEnergy(){
         return energy > Variables.ready_energy;
     }
+
+    public int getEnergy(){return energy;}
     public void spendEnergy(int energy){
         this.energy -= energy;
     }
@@ -119,10 +121,10 @@ public class Animal extends AbstractMapElement{
     }
 
     public void move(){
-        if(energy == 0) {
-            die();
-            return;
-        }
+//        if(energy == 0) {
+//            die();
+//            return;
+//        }
 //        if(map.objectAt(getPosition().add(animalDir.toUnitVector())) instanceof Animal){
 //            Animal pair = (Animal)map.objectAt(getPosition().add(animalDir.toUnitVector()));
 //            if(this.isEnoughEnergy() && pair.isEnoughEnergy()){
@@ -183,6 +185,8 @@ public class Animal extends AbstractMapElement{
     }
 
     public Animal comparator(Animal b){
+        if(b == null)
+            return this;
         if (this.energy>b.energy){
             return this;
         }

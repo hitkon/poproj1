@@ -71,7 +71,7 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     @Override
     public void run() {
 
-        int numberOfAnimals = positions.length;
+//        int numberOfAnimals = positions.length;
 //        animals = new Animal[numberOfAnimals];
 //        for (int i = 0; i < numberOfAnimals; i++) {
 //            animals[i] = new Animal(map, positions[i]);
@@ -87,12 +87,18 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
 
         //System.out.println(map);
         while (true) {
-
+            for(int i = 0; i < animals.size(); i++){
+                if(animals.get(i).getEnergy()==0){
+                    animals.get(i).die();
+                    animals.remove(i);
+//                    removeAnimal(animals.get(i));
+                    i--;
+                }
+            }
+            System.out.println(animals.size());
             if(animals.isEmpty())
                 break;
 
-            for (int i = 0; i < Variables.plants_growth; i++)
-                map.addNewGrass();
             for (int i = 0; i < animals.size(); i++) {
                 animals.get(i).move();
 //            Platform.runLater(()->{gui.drawGrid2();});
@@ -101,6 +107,8 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 for(int j = 0; j < map.getRightUpCorner().y; j++)
                     map.startDayRutine(new Vector2d(i,j));
             }
+            for (int i = 0; i < Variables.plants_growth; i++)
+                map.addNewGrass();
             try {
                 Thread.sleep(moveDelay);
             } catch (InterruptedException e) {
@@ -130,9 +138,9 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 break;
             }
             case "Died": {
-                Animal animal = (Animal)message.getAttachment();
+//                Animal animal = (Animal)message.getAttachment();
                 //remove(animal);
-                removeAnimal(animal);
+//                removeAnimal(animal);
                 break;
             }
             case "NewAnimal":{

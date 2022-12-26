@@ -33,14 +33,15 @@ public class App extends Application implements IObserver{
     private Scene scene;
 
     private Vector2d[] genAnimals(int n){
-        HashSet<Vector2d> positions = new HashSet<>();
+        List<Vector2d> positions = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i < n; i++){
             Vector2d position;
-            do{
-                position = new Vector2d(rand.nextInt(Variables.map_h), rand.nextInt(Variables.map_l));
-            }
-            while (positions.contains(position));
+//            do{
+//
+//            }
+//            while (positions.contains(position));
+            position = new Vector2d(rand.nextInt(Variables.map_h), rand.nextInt(Variables.map_l));
             positions.add(position);
         }
 //        Vector2d[] ans = new Vector2d[positions.size()];

@@ -30,6 +30,17 @@ public class PortalMap extends AbstractWorldMap {
         return null;
     }
 
+    private Vector2d[] getFreeCells(){
+        List<Vector2d> ret = new ArrayList<>();
+        for(int i = 0; i < width; i++){
+            for(int j = 0; j < length; j++){
+                if(!map[i][j].isGrassHere() && !deadCells.contains(new Vector2d(i, j)))
+                    ret.add(new Vector2d(i, j));
+            }
+        }
+        return ret.toArray(new Vector2d[ret.size()]);
+    }
+
     public void addNewGrass() {
         Random rand = new Random();
         Vector2d position;
@@ -41,14 +52,16 @@ public class PortalMap extends AbstractWorldMap {
                 return;
             }
         } else {
-            if (deadCells.size() == width * length) {
+            Vector2d[] freeCells = getFreeCells();
+            if (freeCells.length == 0) {
                 return;
                 //position = returnFreeDeadPosition();
             } else {
-                do {
-                    position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
-                }
-                while (deadCells.contains(position) || (map[position.x][position.y].isGrassHere()));
+                position = freeCells[rand.nextInt(freeCells.length)];
+//                do {
+//                    position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
+//                }
+//                while (deadCells.contains(position) || (map[position.x][position.y].isGrassHere()));
             }
         }
         map[position.x][position.y].setGrassHere();
