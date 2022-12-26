@@ -19,7 +19,7 @@ public class Variables {
     public static int animals=4;
 
     //startowa energia zwierzaków
-    public static int start_energy=15;
+    public static int start_energy=8;
 
     //energia konieczna, by uznać zwierzaka za najedzonego (i gotowego do rozmnażania)
     public static int ready_energy=3;

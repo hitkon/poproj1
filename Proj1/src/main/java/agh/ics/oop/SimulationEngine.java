@@ -16,42 +16,18 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     private int moveDelay;
     private App gui;
 
-//    public SimulationEngine( AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
-//        //this.args = args;
-//        this.map = map;
-//        this.positions = positions;
-//        this.gui = gui;
-//        this.moveDelay = moveDelay;
-//        animals = new ArrayList<>();
-//        //animals = new Animal[positions.length];
-//        for (int i = 0; i < positions.length; i++) {
-//
-//            Animal animal = new Animal(map, positions[i]);
-//            animal.addObserver(map);
-//            animal.addObserver(this);
-//            animals.add(animal);
-//            //animals.get(i).addObserver(map);
-//            //animals[i].addObserver(map.getBounds());
-//            //animals[i].addObserver(gui);
-//        }
-//    }
     public SimulationEngine( AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
-        //this.args = args;
         this.map = map;
         this.positions = positions;
         this.gui = gui;
         this.moveDelay = moveDelay;
         animals = new ArrayList<>();
-        //animals = new Animal[positions.length];
         for (int i = 0; i < positions.length; i++) {
 
             Animal animal = new Animal(map, positions[i]);
             animal.addObserver(map);
             animal.addObserver(this);
             animals.add(animal);
-            //animals.get(i).addObserver(map);
-            //animals[i].addObserver(map.getBounds());
-            //animals[i].addObserver(gui);
         }
     }
 
@@ -64,34 +40,14 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
         animals.remove(animal);
     }
 
-
-//    public void setArgs(MoveDirection[] args){
-//        this.args = args;
-//    }
     @Override
     public void run() {
 
-//        int numberOfAnimals = positions.length;
-//        animals = new Animal[numberOfAnimals];
-//        for (int i = 0; i < numberOfAnimals; i++) {
-//            animals[i] = new Animal(map, positions[i]);
-//            animals[i].addObserver(map);
-//            animals[i].addObserver(map.getBounds());
-//            animals[i].addObserver(this);
-//        }
-//
-//        if (map instanceof GrassField)
-//            map.getBounds().forceUpdate();
-
-        //gui.drawGrid2();
-
-        //System.out.println(map);
         while (true) {
             for(int i = 0; i < animals.size(); i++){
                 if(animals.get(i).getEnergy()==0){
                     animals.get(i).die();
                     animals.remove(i);
-//                    removeAnimal(animals.get(i));
                     i--;
                 }
             }
@@ -119,17 +75,8 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 gui.drawGrid2();
             });
         }
-//        for (int i = 0; i < numberOfAnimals; i++) {
-//            animals[i].removeObserver(map);
-//            animals[i].removeObserver(map.getBounds());
-//            //animals[i].removeObserver(gui);
-//        }
     }
 
-//    @Override
-//    public void positionChanged(Vector2d oldPosition, Vector2d newPosition) {
-//        Platform.runLater(()->{gui.drawGrid2();});
-//    }
 
     @Override
     public void update(Message message){
@@ -137,18 +84,11 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
             case "PositionChanged": {
                 break;
             }
-            case "Died": {
-//                Animal animal = (Animal)message.getAttachment();
-                //remove(animal);
-//                removeAnimal(animal);
-                break;
-            }
             case "NewAnimal":{
                 Animal animal = (Animal) message.getAttachment();
                 animal.addObserver(map);
                 animal.addObserver(this);
                 animals.add(animal);
-                //map.place(animal);
                 break;
             }
             default:{

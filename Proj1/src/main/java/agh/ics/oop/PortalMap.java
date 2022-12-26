@@ -55,21 +55,14 @@ public class PortalMap extends AbstractWorldMap {
             Vector2d[] freeCells = getFreeCells();
             if (freeCells.length == 0) {
                 return;
-                //position = returnFreeDeadPosition();
             } else {
                 position = freeCells[rand.nextInt(freeCells.length)];
-//                do {
-//                    position = new Vector2d(rand.nextInt(width), rand.nextInt(length));
-//                }
-//                while (deadCells.contains(position) || (map[position.x][position.y].isGrassHere()));
             }
         }
         map[position.x][position.y].setGrassHere();
-//        if(objectAt(position) instanceof Animal){
-//            ((Animal)objectAt(position)).addEnergy(Variables.breed_energy);
-//            return;
+
     }
-//        Grass newGrass = new Grass(position);
+
 
 
 
@@ -114,43 +107,27 @@ public class PortalMap extends AbstractWorldMap {
     public boolean canMoveTo(Animal animal, Vector2d position) {
         if (isOutOfBounds(position))
             return animal.isEnoughEnergy();
-        return true; //Objects[position.x][position.y] == null || !(Objects[position.x][position.y] instanceof Animal);
+        return true;
     }
 
     private Vector2d getRandomFreePosition(){
         Random rand = new Random();
         Vector2d newPosition = new Vector2d(rand.nextInt(width), rand.nextInt(length));
-//        do{
-//
-//        }
-//        while(isOccupied(newPosition));
         return newPosition;
     }
 
     @Override
     public boolean place(Animal animal) {
-//        boolean isGrassEaten = false;
         if(isOutOfBounds(animal.getPosition()))
         {
             Vector2d newRandomPosition = getRandomFreePosition();
             animal.setPosition(newRandomPosition);
             animal.spendEnergy(Variables.breed_energy);
-//            if(isOccupied(newRandomPosition))
-//                isGrassEaten = true;
             map[newRandomPosition.x][newRandomPosition.y].addAnimal(animal);
         }
         else{
             map[animal.getPosition().x][animal.getPosition().y].addAnimal(animal);
-//        else {
-//            if(isOccupied(animal.getPosition()))
-//                isGrassEaten = true;
-//            Objects[animal.getPosition().x][animal.getPosition().y] = animal;
-//        }
-//        if(isGrassEaten){
-//            animal.addEnergy(Variables.plant_energy);
-            //addNewGrass();
         }
-
         return true;
     }
 
@@ -162,7 +139,6 @@ public class PortalMap extends AbstractWorldMap {
     @Override
     public boolean isOccupied(Vector2d position) {
         return map[position.x][position.y].isGrassHere() || map[position.x][position.y].isAnimalsHere();
-        //return Objects[position.x][position.y] != null;
     }
 
     @Override
