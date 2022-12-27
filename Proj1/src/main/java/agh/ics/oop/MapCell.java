@@ -13,7 +13,9 @@ public class MapCell {
     private boolean grassHere;
     private List<Animal> Animals;
     private int x,y;
-    public MapCell(int x, int y){
+    private IVariables vars;
+    public MapCell(int x, int y, IVariables vars){
+        this.vars =  vars;
         this.x =x;
         this.y= y;
         Animals = new ArrayList<>();
@@ -62,7 +64,7 @@ public class MapCell {
     }
     public void dayRutine(){
         if(grassHere && !Animals.isEmpty()){
-            getTopAnimal().addEnergy(Variables.plant_energy);
+            getTopAnimal().addEnergy(vars.getPlantEnergy());
             grassHere = false;
         }
         if(Animals.size()>=2){

@@ -1,6 +1,7 @@
 package agh.ics.oop;
 
 import agh.ics.oop.gui.App;
+import agh.ics.oop.gui.AppStage;
 import javafx.application.Platform;
 
 import java.util.ArrayList;
@@ -14,9 +15,11 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     private Vector2d[] positions;
     private List<Animal> animals;
     private int moveDelay;
-    private App gui;
+    private AppStage gui;
+    private IVariables vars;
 
-    public SimulationEngine( AbstractWorldMap map, Vector2d[] positions, App gui, int moveDelay){
+    public SimulationEngine(AbstractWorldMap map, Vector2d[] positions, AppStage gui, int moveDelay, IVariables vars){
+        this.vars = vars;
         this.map = map;
         this.positions = positions;
         this.gui = gui;
@@ -24,7 +27,7 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
         animals = new ArrayList<>();
         for (int i = 0; i < positions.length; i++) {
 
-            Animal animal = new Animal(map, positions[i]);
+            Animal animal = new Animal(map, positions[i], vars);
             animal.addObserver(map);
             animal.addObserver(this);
             animals.add(animal);
@@ -63,7 +66,7 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 for(int j = 0; j < map.getRightUpCorner().y; j++)
                     map.startDayRutine(new Vector2d(i,j));
             }
-            for (int i = 0; i < Variables.plants_growth; i++)
+            for (int i = 0; i < vars.getPlantEnergy(); i++)
                 map.addNewGrass();
             try {
                 Thread.sleep(moveDelay);

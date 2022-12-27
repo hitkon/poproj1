@@ -8,6 +8,7 @@ public class PortalMap extends AbstractWorldMap {
     private int length, width;
     private MapCell[][] map;
     private HashSet<Vector2d> deadCells;
+    private IVariables vars;
 
     private boolean isFreeDeadCellExist() {
         if (deadCells.isEmpty())
@@ -66,13 +67,14 @@ public class PortalMap extends AbstractWorldMap {
 
 
 
-    public PortalMap(int width, int length, int grassAmount){
+    public PortalMap(int width, int length, int grassAmount, IVariables vars){
+        this.vars = vars;
         this.width = width;
         this.length = length;
         map = new MapCell[width][length];
         for (int i = 0 ; i < width; i++){
             for (int j = 0; j < length; j++){
-                map[i][j] = new MapCell(i,j);
+                map[i][j] = new MapCell(i,j, vars);
             }
         }
         deadCells = new HashSet<>();
@@ -122,7 +124,7 @@ public class PortalMap extends AbstractWorldMap {
         {
             Vector2d newRandomPosition = getRandomFreePosition();
             animal.setPosition(newRandomPosition);
-            animal.spendEnergy(Variables.breed_energy);
+            animal.spendEnergy(vars.getBreedEnergy());
             map[newRandomPosition.x][newRandomPosition.y].addAnimal(animal);
         }
         else{

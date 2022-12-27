@@ -37,17 +37,9 @@ public class App extends Application implements IObserver{
         Random rand = new Random();
         for (int i = 0; i < n; i++){
             Vector2d position;
-//            do{
-//
-//            }
-//            while (positions.contains(position));
-            position = new Vector2d(rand.nextInt(Variables.map_h), rand.nextInt(Variables.map_l));
-            positions.add(position);
+//            position = new Vector2d(rand.nextInt(Variables.map_h), rand.nextInt(Variables.map_l));
+//            positions.add(position);
         }
-//        Vector2d[] ans = new Vector2d[positions.size()];
-//        for (int i = 0; i < positions.size(); i++){
-//            positions.
-//        }
         return positions.toArray(new Vector2d[positions.size()]);
     }
 
@@ -73,23 +65,17 @@ public class App extends Application implements IObserver{
 
         //MoveDirection[] directions = new OptionsParser().parse(getParameters().getRaw());
 //        map = new GrassField( 15);
-        map = new PortalMap(Variables.map_h, Variables.map_l, Variables.plants);
-        Vector2d[] positions = genAnimals(Variables.animals);
+//        map = new PortalMap(Variables.map_h, Variables.map_l, Variables.plants);
+//        Vector2d[] positions = genAnimals(Variables.animals);
 
-        SimulationEngine engine = new SimulationEngine(map, positions, this, 1000);
+        //SimulationEngine engine = new SimulationEngine(map, positions, this, 1000);
 
 
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                try {
-//                    engine.setArgs(new OptionsParser().parse(textField.getText().split(" ")));
-//                }
-//                catch (Exception e){
-//                    System.out.println(e.getMessage());
-//                }
-                Thread engineThread = new Thread(engine);
-                engineThread.start();
+//                Thread engineThread = new Thread(engine);
+//                engineThread.start();
             }
         });
     }

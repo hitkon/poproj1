@@ -11,7 +11,7 @@ public class Animal extends AbstractMapElement{
     private IWorldMap map;
     private List<IObserver> Observers;
 
-    private int[] genom= new int[Variables.genom];
+    private int[] genom; //= new int[Variables.genom];
 
     private int active_gen=0;
     private MapDirection animalDir;
@@ -19,16 +19,20 @@ public class Animal extends AbstractMapElement{
     private int children;
     private int age;
 
-    public Animal(IWorldMap map, Vector2d initialPos){
+    private IVariables vars;
+
+    public Animal(IWorldMap map, Vector2d initialPos, IVariables vars){
         super(initialPos);
+        this.vars = vars;
         animalDir = MapDirection.NORTH;
         animalDir = animalDir.new_direction(new Random().nextInt(8));
         Observers = new ArrayList<>();
+        this.genom = new int[vars.getGenom()];
         this.map = map;
         map.place(this);
-        this.energy = Variables.start_energy;
+        this.energy = vars.getStartEnergy();
         int rand= new Random().nextInt();
-        for (int i=0;i<Variables.genom;i++){
+        for (int i=0;i<vars.getGenom();i++){
             genom[i]=Math.abs(rand%8);
             rand= new Random().nextInt();
         }
@@ -37,32 +41,34 @@ public class Animal extends AbstractMapElement{
     }
 
     private int[] getNewGenom(Animal animal1, Animal animal2){
-        int[] newGen = new int[Variables.genom];
+        int[] newGen = new int[vars.getGenom()];
         int num1 = animal1.energy / (animal1.energy + animal2.energy);
         for (int i = 0; i < num1; i++)
             newGen[i] = animal1.genom[i];
-        for(int i = num1; i < Variables.genom; i++)
+        for(int i = num1; i < vars.getGenom(); i++)
             newGen[i] = animal2.genom[i];
         return newGen;
     }
 
     private void mutate(){
         Random rand = new Random();
-        int mutationsNum = rand.nextInt (Variables.maxMutations - Variables.minMutations + 1) + Variables.minMutations;
+        int mutationsNum = rand.nextInt (vars.getMaxMutations() - vars.getMinMutations() + 1) + vars.getMinMutations();
         for(int i = 0; i < mutationsNum; i++){
-            genom[rand.nextInt(Variables.genom)] = rand.nextInt(8);
+            genom[rand.nextInt(vars.getGenom())] = rand.nextInt(8);
         }
     }
 
 
-    public Animal(IWorldMap map, Vector2d initialPos, Animal father, Animal mother){
+    public Animal(IWorldMap map, Vector2d initialPos, Animal father, Animal mother, IVariables vars){
         super(initialPos);
+        this.vars = vars;
         animalDir = MapDirection.NORTH;
+        this.genom = new int[vars.getGenom()];
         animalDir = animalDir.new_direction(new Random().nextInt(8));
         Observers = new ArrayList<>();
         this.map = map;
         map.place(this);
-        this.energy = Variables.start_energy;
+        this.energy = vars.getStartEnergy();
         int rand= new Random().nextInt();
         if(new Random().nextInt() % 2 == 0)
             genom = getNewGenom(father, mother);
@@ -93,11 +99,11 @@ public class Animal extends AbstractMapElement{
         children++;
     }
     public void makeNewAnimal(Animal pair){
-        Animal newAnimal = new Animal(map, getPosition(), this, pair);
+        Animal newAnimal = new Animal(map, getPosition(), this, pair, vars);
         children+=1;
         pair.children+=1;
-        spendEnergy(Variables.breed_energy);
-        pair.spendEnergy(Variables.breed_energy);
+        spendEnergy(vars.getBreedEnergy());
+        pair.spendEnergy(vars.getBreedEnergy());
         Observers.forEach(observer -> observer.update( new Message("NewAnimal", newAnimal)));
     }
 
@@ -106,7 +112,7 @@ public class Animal extends AbstractMapElement{
     }
 
     public boolean isEnoughEnergy(){
-        return energy > Variables.ready_energy;
+        return energy > vars.getReadyEnergy();
     }
 
     public int getEnergy(){return energy;}
@@ -134,7 +140,7 @@ public class Animal extends AbstractMapElement{
 //            }
 //        }
         age+=1;
-        active_gen=(active_gen+1)%Variables.genom;
+        active_gen=(active_gen+1)%vars.getGenom();
         animalDir=animalDir.new_direction(genom[active_gen]);
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
