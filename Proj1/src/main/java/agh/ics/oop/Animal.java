@@ -134,12 +134,13 @@ public class Animal extends AbstractMapElement{
 //            }
 //        }
         age+=1;
-        active_gen=(active_gen+1)%Variables.genom;
-        animalDir=animalDir.new_direction(genom[active_gen]);
+
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
         }
+        active_gen=(active_gen+1)%Variables.genom;
+        animalDir=animalDir.new_direction(genom[active_gen]);
 
     }
 
@@ -152,28 +153,76 @@ public class Animal extends AbstractMapElement{
     public String getImage() {
         switch (this.animalDir){
             case EAST -> {
-                return "src/main/resources/right.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/right.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/right1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/right3.png";
+                else return "src/main/resources/right2.png";
             }
             case NORTHEAST -> {
-                return "src/main/resources/upRight.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/upRight.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/upRight1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/upRight3.png";
+                else return "src/main/resources/upRight2.png";
             }
             case WEST -> {
-                return "src/main/resources/left.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/left.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/left1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/left3.png";
+                else return "src/main/resources/left2.png";
             }
             case NORTHWEST -> {
-                return "src/main/resources/upLeft.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/upLeft.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/upLeft1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/upLeft3.png";
+                else return "src/main/resources/upLeft2.png";
             }
             case NORTH -> {
-                return "src/main/resources/up.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/up.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/up1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/up3.png";
+                else return "src/main/resources/up2.png";
             }
             case SOUTHEAST -> {
-                return "src/main/resources/downRight.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/downRight.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/downRight1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/downRight3.png";
+                else return "src/main/resources/downRight2.png";
             }
             case SOUTHWEST -> {
-                return "src/main/resources/downLeft.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/downLeft.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/downLeft1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/downLeft3.png";
+                else return "src/main/resources/downLeft2.png";
             }
             case SOUTH -> {
-                return "src/main/resources/down.png";
+                if (this.energy<(Variables.ready_energy/2))
+                    return "src/main/resources/down.png";
+                else if (this.energy<Variables.ready_energy)
+                    return "src/main/resources/down1.png";
+                else if (this.energy>2*Variables.ready_energy)
+                    return "src/main/resources/down3.png";
+                else return "src/main/resources/down2.png";
             }
         }
         return null;

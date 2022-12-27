@@ -3,8 +3,8 @@ package agh.ics.oop;
 public class Variables {
 
     //wysokość i szerokość mapy
-    public static int map_h=5;
-    public static int map_l=5;
+    public static int map_h=7;
+    public static int map_l=8;
 
     //startowa liczba roślin
     public static int plants=6;
@@ -22,7 +22,7 @@ public class Variables {
     public static int start_energy=8;
 
     //energia konieczna, by uznać zwierzaka za najedzonego (i gotowego do rozmnażania)
-    public static int ready_energy=3;
+    public static int ready_energy=4;
 
     //energia rodzica zużywana by stworzyć potomka
     public static int breed_energy=1;
