@@ -140,14 +140,15 @@ public class Animal extends AbstractMapElement{
 //            }
 //        }
         age+=1;
-        active_gen=(active_gen+1)%vars.getGenom();
-        animalDir=animalDir.new_direction(genom[active_gen]);
+        //active_gen=(active_gen+1)%vars.getGenom();
+        //animalDir=animalDir.new_direction(genom[active_gen]);
+        //Gen zmienia się po wykonaniu ruchu, zeby pokazywac w ktorym kierunku zwierzak pojdzie w kolejnej turze
         if(map.canMoveTo(this, getPosition().add(animalDir.toUnitVector()))) {
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
         }
-//        active_gen=(active_gen+1)%Variables.genom;
-//        animalDir=animalDir.new_direction(genom[active_gen]);
+        active_gen=(active_gen+1)%vars.getGenom();
+        animalDir=animalDir.new_direction(genom[active_gen]);
 
     }
 
@@ -233,6 +234,10 @@ public class Animal extends AbstractMapElement{
             }
         }
         return null;
+    }
+
+    public int getAge(){
+        return age;
     }
 
     @Override
