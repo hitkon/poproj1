@@ -19,10 +19,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,6 +36,8 @@ public class AppStage extends Stage implements IObserver{
     private GridPane stats;
     private Scene scene;
     private IVariables vars;
+
+    private UUID fileUUID;
 
 
     private boolean isEngineCreated = false;
@@ -95,7 +94,7 @@ public class AppStage extends Stage implements IObserver{
         //saving data to csv file
         try
         {
-            FileWriter fw = new FileWriter("stats.csv",true); //the true will append the new data
+            FileWriter fw = new FileWriter("stats"+fileUUID+".csv",true); //the true will append the new data
             fw.write("\n"+Integer.toString(pom[0])+","+Integer.toString(pom[1])+","+Integer.toString(pom[4])+","+Float.toString(avg_age)+","+Float.toString(avg_e));//appends the string to the file
             fw.close();
         }
@@ -106,7 +105,8 @@ public class AppStage extends Stage implements IObserver{
     }
     public void init() throws Exception {
         //preparing csv file
-        FileWriter fileWriter = new FileWriter("stats.csv");
+        fileUUID = UUID.randomUUID();
+        FileWriter fileWriter = new FileWriter("stats"+fileUUID+".csv");
         PrintWriter printWriter = new PrintWriter(fileWriter);
         printWriter.printf("Animals,Grasses,Free_spots,Avgerage age of dead animals,Avg energy of living animals");
         printWriter.close();
