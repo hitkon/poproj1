@@ -17,17 +17,9 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     private int moveDelay;
     private AppStage gui;
     private IVariables vars;
-    private boolean isRun;
-
-    public void startSimulation(){
-        isRun = true;
-    }
-    public void stopSimulation(){
-        isRun = false;
-    }
-    public boolean getIsRun(){
-        return isRun;
-    }
+    private boolean isRunning = true;
+    public void setIsRunning(boolean p){isRunning = p;}
+    public boolean getIsRunning(){return isRunning;}
 
     public SimulationEngine(AbstractWorldMap map, Vector2d[] positions, AppStage gui, int moveDelay, IVariables vars){
         this.vars = vars;
@@ -58,13 +50,13 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     public void run() {
 
         while (true) {
-            if(!isRun){
+
+            if(!isRunning){
                 try {
-                    Thread.sleep(1);
+                    Thread.sleep(10);
                 } catch (InterruptedException e) {}
                 continue;
             }
-
 
             for(int i = 0; i < animals.size(); i++){
                 if(animals.get(i).getEnergy()==0){
@@ -85,7 +77,7 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
                 for(int j = 0; j < map.getRightUpCorner().y; j++)
                     map.startDayRutine(new Vector2d(i,j));
             }
-            for (int i = 0; i < vars.getPlantEnergy(); i++)
+            for (int i = 0; i < vars.getPlantGrowth(); i++)
                 map.addNewGrass();
             try {
                 Thread.sleep(moveDelay);

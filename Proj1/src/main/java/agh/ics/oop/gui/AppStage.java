@@ -35,9 +35,8 @@ public class AppStage extends Stage implements IObserver{
     private GridPane panel2;
     private Scene scene;
     private IVariables vars;
-    Thread engineThread ;
-    PauseTransition pause = new PauseTransition();
-    private boolean isSimulationsCreated = false;
+
+    private boolean isEngineCreated = false;
     public AppStage(IVariables vars) throws Exception {
         this.vars = vars;
         init();
@@ -60,11 +59,12 @@ public class AppStage extends Stage implements IObserver{
         panel2 = new GridPane();
 //        TextField textField = new TextField();
         Button startButton = new Button();
-        startButton.setText("Start");
+        startButton.setText("Start/Resume");
         Button stopButton = new Button();
-        stopButton.setText("Stop");
-        panel2.add(startButton, 0,0);
-        panel2.add(stopButton, 1, 0);
+        stopButton.setText("Pause");
+        panel2.add(startButton, 0,1);
+        panel2.add(stopButton, 1 , 1);
+        panel2.add(panel3, 0, 0);
         panel2.add(panel, 0, 2);
         panel2.setAlignment(Pos.CENTER);
         panel.getColumnConstraints().add(new ColumnConstraints(40));
@@ -79,50 +79,30 @@ public class AppStage extends Stage implements IObserver{
         Vector2d[] positions = genAnimals(vars.getAnimals());
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000, vars);
-        engineThread = new Thread(engine);
-
+        Thread engineThread = new Thread(engine);
 
         startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(!isSimulationsCreated) {
-                    engine.startSimulation();
+                if(!isEngineCreated) {
                     engineThread.start();
-                    isSimulationsCreated = true;
+                    isEngineCreated = true;
                 }
-                else {
-                    if(!engine.getIsRun())
-                        engine.startSimulation();
-//                    pause.stop();
-//                    Platform.runLater(() -> {
-//                        engineThread.notify();
-//                    });
-//                    this.notify();
-//                    engineThread.notify();
+                else{
+                    if(!engine.getIsRunning())
+                        engine.setIsRunning(true);
                 }
-
             }
         });
 
         stopButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event){
-                if(engine.getIsRun() && isSimulationsCreated)
-                    engine.stopSimulation();
-//                pause.
-//                Platform.runLater(() -> {
-//                    try {
-//                        engineThread.wait();
-//                    } catch (InterruptedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                });
-//                    engineThread.wait();
-
+            public void handle(ActionEvent event) {
+                if(engine.getIsRunning() && isEngineCreated)
+                    engine.setIsRunning(false);
             }
         });
-        this.setOnHiding( event -> {engineThread.stop();} );
-
+        this.setOnHiding( event -> {engineThread.interrupt();} );
         scene = new Scene(panel2, 800, 800);
         this.setScene(scene);
 //        this.show();
