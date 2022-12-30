@@ -146,8 +146,8 @@ public class Animal extends AbstractMapElement{
             positionChanged(getPosition(), getPosition().add(animalDir.toUnitVector()));
             spendEnergy(1);
         }
-        active_gen=(active_gen+1)%Variables.genom;
-        animalDir=animalDir.new_direction(genom[active_gen]);
+//        active_gen=(active_gen+1)%Variables.genom;
+//        animalDir=animalDir.new_direction(genom[active_gen]);
 
     }
 
@@ -160,74 +160,74 @@ public class Animal extends AbstractMapElement{
     public String getImage() {
         switch (this.animalDir){
             case EAST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/right.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/right1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/right3.png";
                 else return "src/main/resources/right2.png";
             }
             case NORTHEAST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/upRight.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/upRight1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/upRight3.png";
                 else return "src/main/resources/upRight2.png";
             }
             case WEST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/left.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/left1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/left3.png";
                 else return "src/main/resources/left2.png";
             }
             case NORTHWEST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/upLeft.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/upLeft1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/upLeft3.png";
                 else return "src/main/resources/upLeft2.png";
             }
             case NORTH -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/up.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/up1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/up3.png";
                 else return "src/main/resources/up2.png";
             }
             case SOUTHEAST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/downRight.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/downRight1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/downRight3.png";
                 else return "src/main/resources/downRight2.png";
             }
             case SOUTHWEST -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/downLeft.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/downLeft1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/downLeft3.png";
                 else return "src/main/resources/downLeft2.png";
             }
             case SOUTH -> {
-                if (this.energy<(Variables.ready_energy/2))
+                if (this.energy<(vars.getReadyEnergy()/2))
                     return "src/main/resources/down.png";
-                else if (this.energy<Variables.ready_energy)
+                else if (this.energy<vars.getReadyEnergy())
                     return "src/main/resources/down1.png";
-                else if (this.energy>2*Variables.ready_energy)
+                else if (this.energy>2*vars.getReadyEnergy())
                     return "src/main/resources/down3.png";
                 else return "src/main/resources/down2.png";
             }

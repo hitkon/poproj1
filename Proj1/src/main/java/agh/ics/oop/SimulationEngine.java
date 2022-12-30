@@ -17,6 +17,17 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     private int moveDelay;
     private AppStage gui;
     private IVariables vars;
+    private boolean isRun;
+
+    public void startSimulation(){
+        isRun = true;
+    }
+    public void stopSimulation(){
+        isRun = false;
+    }
+    public boolean getIsRun(){
+        return isRun;
+    }
 
     public SimulationEngine(AbstractWorldMap map, Vector2d[] positions, AppStage gui, int moveDelay, IVariables vars){
         this.vars = vars;
@@ -47,6 +58,14 @@ public class SimulationEngine implements IEngine, IObserver, Runnable{
     public void run() {
 
         while (true) {
+            if(!isRun){
+                try {
+                    Thread.sleep(1);
+                } catch (InterruptedException e) {}
+                continue;
+            }
+
+
             for(int i = 0; i < animals.size(); i++){
                 if(animals.get(i).getEnergy()==0){
                     animals.get(i).die();

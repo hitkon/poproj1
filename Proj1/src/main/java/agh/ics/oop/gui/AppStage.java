@@ -4,6 +4,7 @@ package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
 import agh.ics.oop.Variables;
+import javafx.animation.PauseTransition;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.FutureTask;
 
 public class AppStage extends Stage implements IObserver{
 
@@ -32,6 +35,9 @@ public class AppStage extends Stage implements IObserver{
     private GridPane panel2;
     private Scene scene;
     private IVariables vars;
+    Thread engineThread ;
+    PauseTransition pause = new PauseTransition();
+    private boolean isSimulationsCreated = false;
     public AppStage(IVariables vars) throws Exception {
         this.vars = vars;
         init();
@@ -53,10 +59,12 @@ public class AppStage extends Stage implements IObserver{
         panel = new GridPane();
         panel2 = new GridPane();
 //        TextField textField = new TextField();
-        Button button = new Button();
-        button.setText("Start");
-        panel2.add(button, 0,0);
-//        panel2.add(textField, 0, 1);
+        Button startButton = new Button();
+        startButton.setText("Start");
+        Button stopButton = new Button();
+        stopButton.setText("Stop");
+        panel2.add(startButton, 0,0);
+        panel2.add(stopButton, 1, 0);
         panel2.add(panel, 0, 2);
         panel2.setAlignment(Pos.CENTER);
         panel.getColumnConstraints().add(new ColumnConstraints(40));
@@ -71,18 +79,53 @@ public class AppStage extends Stage implements IObserver{
         Vector2d[] positions = genAnimals(vars.getAnimals());
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000, vars);
+        engineThread = new Thread(engine);
 
 
-        button.setOnAction(new EventHandler<ActionEvent>() {
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Thread engineThread = new Thread(engine);
-                engineThread.start();
+                if(!isSimulationsCreated) {
+                    engine.startSimulation();
+                    engineThread.start();
+                    isSimulationsCreated = true;
+                }
+                else {
+                    if(!engine.getIsRun())
+                        engine.startSimulation();
+//                    pause.stop();
+//                    Platform.runLater(() -> {
+//                        engineThread.notify();
+//                    });
+//                    this.notify();
+//                    engineThread.notify();
+                }
+
             }
         });
+
+        stopButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event){
+                if(engine.getIsRun() && isSimulationsCreated)
+                    engine.stopSimulation();
+//                pause.
+//                Platform.runLater(() -> {
+//                    try {
+//                        engineThread.wait();
+//                    } catch (InterruptedException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                });
+//                    engineThread.wait();
+
+            }
+        });
+        this.setOnHiding( event -> {engineThread.stop();} );
+
         scene = new Scene(panel2, 800, 800);
         this.setScene(scene);
-        this.show();
+//        this.show();
         drawGrid2();
     }
 
