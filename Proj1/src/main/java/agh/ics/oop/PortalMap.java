@@ -5,7 +5,6 @@ import java.util.*;
 
 public class PortalMap extends AbstractWorldMap {
 
-    private int animals,grasses,dead_animals=0,age_sum=0,free_cells,energy_sum;
     private int length, width;
     private MapCell[][] map;
     private HashSet<Vector2d> deadCells;
@@ -62,7 +61,6 @@ public class PortalMap extends AbstractWorldMap {
             }
         }
         map[position.x][position.y].setGrassHere();
-        grasses+=1;
 
     }
 
@@ -132,16 +130,12 @@ public class PortalMap extends AbstractWorldMap {
         else{
             map[animal.getPosition().x][animal.getPosition().y].addAnimal(animal);
         }
-        animals+=1;
         return true;
     }
 
     public void startDayRutine(Vector2d pos){
-        if(map[pos.x][pos.y].isAnimalsHere()) {
-            boolean b = map[pos.x][pos.y].dayRutine();
-            if (b==true)
-                this.grasses-=1;
-        }
+        if(map[pos.x][pos.y].isAnimalsHere())
+            map[pos.x][pos.y].dayRutine();
     }
 
     @Override
@@ -157,7 +151,6 @@ public class PortalMap extends AbstractWorldMap {
     @Override
     public void remove(Animal animal) {
         map[animal.getPosition().x][animal.getPosition().y].removeAnimal(animal);
-        this.animals-=1;
     }
 
     public void update(Message message){
@@ -174,8 +167,6 @@ public class PortalMap extends AbstractWorldMap {
             case "Died": {
                 Animal animal = (Animal)message.getAttachment();
                 remove(animal);
-                dead_animals+=1;
-                age_sum+=animal.getAge();
                 deadCells.add(animal.getPosition());
                 break;
             }
@@ -183,25 +174,5 @@ public class PortalMap extends AbstractWorldMap {
                 //throw new IllegalArgumentException("Unable to read message:" + message.getText());
             }
         }
-    }
-
-    public int[] get_stats(){
-        free_cells=0;
-        energy_sum=0;
-        for (int i=0;i<this.length;i++)
-            for (int j=0;j<this.width;j++){
-                if (!map[j][i].isGrassHere() && !map[j][i].isAnimalsHere())
-                    free_cells+=1;
-                energy_sum+=map[j][i].all_energy();
-            }
-
-        int[] pom = new int[6];
-        pom[0]=animals;
-        pom[1]=grasses;
-        pom[2]=dead_animals;
-        pom[3]=age_sum;
-        pom[4]=free_cells;
-        pom[5]=energy_sum;
-        return pom;
     }
 }
