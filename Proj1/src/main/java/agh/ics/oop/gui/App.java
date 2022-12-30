@@ -92,7 +92,7 @@ public class App extends Application implements IObserver{
 
         panel.setGridLinesVisible(false);
         panel.getChildren().clear();
-        //System.out.println(map);
+        System.out.println(map);
         Vector2d leftDown = map.getLeftDownCorner(), upRight = map.getRightUpCorner();
         String[] buf = map.toString().split("\n");
         int panelHeight = buf.length, panelWidth = buf[0].split(" ").length;
@@ -164,7 +164,7 @@ public class App extends Application implements IObserver{
         panel.setGridLinesVisible(true);
     }
     private void drawGrid(GridPane panel, AbstractWorldMap map ){
-        //System.out.println(map);
+        System.out.println(map);
         Vector2d leftDown = map.getLeftDownCorner(), upRight = map.getRightUpCorner();
         String[] buf = map.toString().split("\n");
         int panelHeight = buf.length, panelWidth = buf[0].split(" ").length;
