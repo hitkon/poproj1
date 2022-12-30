@@ -236,6 +236,10 @@ public class Animal extends AbstractMapElement{
         return null;
     }
 
+    public int getAge(){
+        return age;
+    }
+
     @Override
     public String getLabelText() {
         return "A" + this.getPosition().toString();
