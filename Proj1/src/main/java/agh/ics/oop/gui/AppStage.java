@@ -3,6 +3,7 @@ package agh.ics.oop.gui;
 //import agh.ics.oop.*;
 
 import agh.ics.oop.*;
+import java.time.LocalDateTime;
 import agh.ics.oop.Variables;
 import javafx.application.*;
 import javafx.event.ActionEvent;
@@ -17,13 +18,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.io.FileInputStream;
-import java.io.InputStream;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Group;
@@ -39,6 +39,7 @@ public class AppStage extends Stage implements IObserver{
     private GridPane stats;
     private Scene scene;
     private IVariables vars;
+
 
     private boolean isEngineCreated = false;
     public AppStage(IVariables vars) throws Exception {
@@ -58,7 +59,6 @@ public class AppStage extends Stage implements IObserver{
     }
 
     public void stats_update(GridPane stats){
-
         stats.getChildren().clear();
         Label statsTitle = new Label("STATISTICS");
         //statsTitle.setLayoutY(200.0);
@@ -92,8 +92,25 @@ public class AppStage extends Stage implements IObserver{
         //stats.getChildren().addAll(statsTitle,animals,animals_amount,grasses,grasses_amount);
         stats.addColumn(0,statsTitle,animals,animals_amount,grasses,grasses_amount,average_age,average_age_value,free_cells,free_cells_value,average_energy,average_energy_value);
 
+        //saving data to csv file
+        try
+        {
+            FileWriter fw = new FileWriter("stats.csv",true); //the true will append the new data
+            fw.write("\n"+Integer.toString(pom[0])+","+Integer.toString(pom[1])+","+Integer.toString(pom[4])+","+Float.toString(avg_age)+","+Float.toString(avg_e));//appends the string to the file
+            fw.close();
+        }
+        catch(IOException ioe)
+        {
+            System.err.println("IOException: " + ioe.getMessage());
+        }
     }
     public void init() throws Exception {
+        //preparing csv file
+        FileWriter fileWriter = new FileWriter("stats.csv");
+        PrintWriter printWriter = new PrintWriter(fileWriter);
+        printWriter.printf("Animals,Grasses,Free_spots,Avgerage age of dead animals,Avg energy of living animals");
+        printWriter.close();
+
         InputStream stream = new FileInputStream("src/main/resources/legend.png");
         Image image = new Image(stream);
         //Creating the image view
