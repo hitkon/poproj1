@@ -12,8 +12,7 @@ TODO
 -Add Button which starts infinite loop for SimulationEngine. +
 
 GUI:
-- Add statistisc +
-- Add new frame with options and start+
+- Add new frame with options and start
 - Add stop button.
 - Add top genom.
 - Add Animal observation.

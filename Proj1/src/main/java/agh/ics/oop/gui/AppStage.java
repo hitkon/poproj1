@@ -15,7 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -23,21 +25,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.Group;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.FutureTask;
 
 public class AppStage extends Stage implements IObserver{
 
     private AbstractWorldMap map;
     private GridPane panel;
     private GridPane panel2;
-
-    private GridPane panel3;
-
-    private GridPane stats;
     private Scene scene;
     private IVariables vars;
     Thread engineThread ;
@@ -59,57 +54,8 @@ public class AppStage extends Stage implements IObserver{
         return positions.toArray(new Vector2d[positions.size()]);
     }
 
-    public void stats_update(GridPane stats){
-
-        stats.getChildren().clear();
-        Label statsTitle = new Label("STATISTICS");
-        //statsTitle.setLayoutY(200.0);
-        int[] pom;
-        pom= this.map.get_stats();
-
-        Label animals = new Label("Animals:");
-        Label animals_amount = new Label(Integer.toString(pom[0]));
-
-        Label grasses = new Label("Grasses:");
-        Label grasses_amount = new Label(Integer.toString(pom[1]));
-
-        Label average_age = new Label("Average age:");
-        float avg_age;
-        if (pom[2]!=0)
-            avg_age=pom[3]/pom[2];
-        else
-            avg_age=0;
-        Label average_age_value = new Label(Float.toString(avg_age));
-
-        Label free_cells = new Label("Free spots on map:");
-        Label free_cells_value = new Label(Integer.toString(pom[4]));
-
-        Label average_energy = new Label("Average animal's energy:");
-        float avg_e;
-        if (pom[0]!=0 && pom[5]!=0)
-            avg_e=pom[5]/pom[0];
-        else
-            avg_e=0;
-        Label average_energy_value = new Label(Float.toString(avg_e));
-        //stats.getChildren().addAll(statsTitle,animals,animals_amount,grasses,grasses_amount);
-        stats.addColumn(0,statsTitle,animals,animals_amount,grasses,grasses_amount,average_age,average_age_value,free_cells,free_cells_value,average_energy,average_energy_value);
-
-    }
     public void init() throws Exception {
-        InputStream stream = new FileInputStream("src/main/resources/legend.png");
-        Image image = new Image(stream);
-        //Creating the image view
-        ImageView imageView = new ImageView();
-        //Setting image to the image view
-        imageView.setImage(image);
-        imageView.setFitHeight(200);
-        imageView.setFitWidth(150);
-        VBox vBox=new VBox (imageView);
 
-        panel3 = new GridPane();
-        panel3.addRow(0,vBox);
-        stats = new GridPane();
-        panel3.add(stats,1,0);
         panel = new GridPane();
         panel2 = new GridPane();
 //        TextField textField = new TextField();
@@ -181,7 +127,6 @@ public class AppStage extends Stage implements IObserver{
         this.setScene(scene);
 //        this.show();
         drawGrid2();
-
     }
 
     public void start(Stage primaryStage) {
@@ -195,7 +140,7 @@ public class AppStage extends Stage implements IObserver{
 
         panel.setGridLinesVisible(false);
         panel.getChildren().clear();
-        //System.out.println(map);
+        System.out.println(map);
         Vector2d leftDown = map.getLeftDownCorner(), upRight = map.getRightUpCorner();
         String[] buf = map.toString().split("\n");
         int panelHeight = buf.length, panelWidth = buf[0].split(" ").length;
@@ -265,10 +210,9 @@ public class AppStage extends Stage implements IObserver{
             }
         }
         panel.setGridLinesVisible(true);
-        stats_update(stats);
     }
     private void drawGrid(GridPane panel, AbstractWorldMap map ){
-        //System.out.println(map);
+        System.out.println(map);
         Vector2d leftDown = map.getLeftDownCorner(), upRight = map.getRightUpCorner();
         String[] buf = map.toString().split("\n");
         int panelHeight = buf.length, panelWidth = buf[0].split(" ").length;

@@ -62,12 +62,10 @@ public class MapCell {
     public void removeAnimal(Animal animal){
         Animals.remove(animal);
     }
-    public boolean dayRutine(){
-        boolean grass_eaten=false;
+    public void dayRutine(){
         if(grassHere && !Animals.isEmpty()){
             getTopAnimal().addEnergy(vars.getPlantEnergy());
             grassHere = false;
-            grass_eaten=true;
         }
         if(Animals.size()>=2){
             Animal animal = getTopAnimal();
@@ -79,13 +77,5 @@ public class MapCell {
             if(animal.isEnoughEnergy() && pair.isEnoughEnergy())
                 animal.makeNewAnimal(pair);
         }
-        return grass_eaten;
-    }
-
-    public int all_energy(){
-        int sum=0;
-        for (Animal animal: Animals)
-            sum+=animal.getEnergy();
-        return sum;
     }
 }
