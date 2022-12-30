@@ -39,6 +39,8 @@ public class AppStage extends Stage implements IObserver{
     private GridPane stats;
     private Scene scene;
     private IVariables vars;
+
+    private boolean isEngineCreated = false;
     public AppStage(IVariables vars) throws Exception {
         this.vars = vars;
         init();
@@ -109,9 +111,12 @@ public class AppStage extends Stage implements IObserver{
         panel = new GridPane();
         panel2 = new GridPane();
 //        TextField textField = new TextField();
-        Button button = new Button();
-        button.setText("Start");
-        panel2.add(button, 0,1);
+        Button startButton = new Button();
+        startButton.setText("Start/Resume");
+        Button stopButton = new Button();
+        stopButton.setText("Pause");
+        panel2.add(startButton, 0,1);
+        panel2.add(stopButton, 1 , 1);
         panel2.add(panel3, 0, 0);
         panel2.add(panel, 0, 2);
         panel2.setAlignment(Pos.CENTER);
@@ -127,15 +132,30 @@ public class AppStage extends Stage implements IObserver{
         Vector2d[] positions = genAnimals(vars.getAnimals());
 
         SimulationEngine engine = new SimulationEngine(map, positions, this, 1000, vars);
+        Thread engineThread = new Thread(engine);
 
-
-        button.setOnAction(new EventHandler<ActionEvent>() {
+        startButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Thread engineThread = new Thread(engine);
-                engineThread.start();
+                if(!isEngineCreated) {
+                    engineThread.start();
+                    isEngineCreated = true;
+                }
+                else{
+                    if(!engine.getIsRunning())
+                        engine.setIsRunning(true);
+                }
             }
         });
+
+        stopButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(engine.getIsRunning() && isEngineCreated)
+                    engine.setIsRunning(false);
+            }
+        });
+        this.setOnHiding( event -> {engineThread.interrupt();} );
         scene = new Scene(panel2, 800, 800);
         this.setScene(scene);
         this.show();
