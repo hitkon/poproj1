@@ -2,7 +2,7 @@ package agh.ics.oop;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class GenomTest {
+/*public class GenomTest {
     PortalMap m = new PortalMap(5,5,5);
     Animal rufus= new Animal(m,new Vector2d(1,1));
 
@@ -17,4 +17,4 @@ public class GenomTest {
         Assertions.assertEquals(1, 1);
 
     }
-}
+}*/

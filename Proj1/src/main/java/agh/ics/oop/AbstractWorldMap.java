@@ -14,6 +14,8 @@ public abstract class AbstractWorldMap implements IWorldMap, IObserver{
 
     public abstract Vector2d getRightUpCorner();
 
+    public abstract int[] get_stats();
+
 
     public String toString(){
         return new MapVisualizer(this).draw(getLeftDownCorner(), getRightUpCorner());
